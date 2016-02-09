@@ -35,7 +35,7 @@ public class HttpUrlResponse {
      * @return True if the request was successful
      */
     public boolean isSuccess() {
-        return this.mResponseCode > HttpStatus.SC_OK &&
+        return this.mResponseCode >= HttpStatus.SC_OK &&
                 this.mResponseCode < HttpStatus.SC_MULTIPLE_CHOICES;
     }
 
