@@ -191,6 +191,22 @@ public abstract class HttpUrlConnectionRequest {
      * @param context       The current Context
      * @param requestMethod The HTTP request method
      * @param requestUrl    The HTTP request URL
+     * @param authToken     The authentication token
+     */
+    public HttpUrlConnectionRequest(Context context, String requestMethod, String requestUrl,
+                                    String authToken) {
+        this(context, requestMethod, requestUrl);
+        // Add the auth header
+        this.addAuthHeader(authToken);
+    }
+
+    /**
+     * Constructs an instance with authentication information and adds the authentication header to
+     * the collection of request headers
+     *
+     * @param context       The current Context
+     * @param requestMethod The HTTP request method
+     * @param requestUrl    The HTTP request URL
      * @param account       The Account that will be used to get the authentication token
      * @param authTokenType The type of authentication token
      */
@@ -410,6 +426,19 @@ public abstract class HttpUrlConnectionRequest {
         // User agent
         this.mRequestHeaders.add(new Pair<String, String>("User-Agent",
                 HttpUrlConnectionRequest.USER_AGENT));
+    }
+
+    /**
+     * Adds the authentication token to the authentication header
+     *
+     * @param authToken The authentication token
+     */
+    protected void addAuthHeader(String authToken) {
+        if (authToken != null) {
+            // Add the header
+            this.addRequestHeader(AUTH_HEADER, Base64.encodeToString((authToken).getBytes(),
+                    Base64.URL_SAFE | Base64.NO_WRAP));
+        }
     }
 
     /**

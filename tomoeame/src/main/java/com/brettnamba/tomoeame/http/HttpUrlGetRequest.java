@@ -26,6 +26,18 @@ public class HttpUrlGetRequest extends HttpUrlConnectionRequest {
     }
 
     /**
+     * Constructs an instance with authentication information and adds the authentication header to
+     * the collection of request headers
+     *
+     * @param context    The current Context
+     * @param requestUrl The HTTP request URL
+     * @param authToken  The authentication token
+     */
+    public HttpUrlGetRequest(Context context, String requestUrl, String authToken) {
+        super(context, HttpGet.METHOD_NAME, requestUrl, authToken);
+    }
+
+    /**
      * Constructs an instance only with the request URL and authentication header
      *
      * @param context       The current Context
