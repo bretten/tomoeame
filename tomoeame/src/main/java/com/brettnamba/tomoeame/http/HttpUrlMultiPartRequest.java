@@ -115,6 +115,9 @@ public class HttpUrlMultiPartRequest extends HttpUrlConnectionRequest {
      */
     public HttpUrlMultiPartRequest(Context context, String requestUrl, String authToken) {
         super(context, HttpPost.METHOD_NAME, requestUrl, authToken);
+        this.mRequestParameterBytesCollection = new ArrayList<byte[]>();
+        this.mFileUploadContentUris = new HashMap<String, Uri>();
+        this.mFileUploadHeaderBytesCollection = new HashMap<Uri, byte[]>();
     }
 
     /**
