@@ -4,10 +4,12 @@ import android.accounts.Account;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v4.util.Pair;
+import android.webkit.MimeTypeMap;
 
 import com.brettnamba.tomoeame.util.Files;
 
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.protocol.HTTP;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -341,7 +343,7 @@ public class HttpUrlMultiPartRequest extends HttpUrlConnectionRequest {
         // Get the filename
         final String filename = UUID.randomUUID().toString();
         // Get the mime type
-        final String mimeType = this.mContext.getContentResolver().getType(uri);
+        final String mimeType = this.determineMimeType(this.mContext, uri);
 
         // Build the header for the file that will be placed in the request body
         final StringBuilder builder = new StringBuilder();
@@ -416,6 +418,30 @@ public class HttpUrlMultiPartRequest extends HttpUrlConnectionRequest {
                 this.closeInputStream(fileInputStream);
             }
         }
+    }
+
+    /**
+     * Determines the MIME type of the file at the specified URI
+     *
+     * @param context The application Context
+     * @param uri     The location of the file to check the MIME type of
+     * @return The MIME type
+     */
+    private String determineMimeType(Context context, Uri uri) {
+        String mimeType;
+        // First try the ContentResolver
+        mimeType = context.getContentResolver().getType(uri);
+        // If no type was found, try MimeTypeMap
+        if (mimeType == null) {
+            mimeType = MimeTypeMap.getSingleton()
+                    .getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(uri.toString()));
+        }
+        // If still nothing was found, fallback to the default MIME type
+        if (mimeType == null) {
+            mimeType = HTTP.OCTET_STREAM_TYPE;
+        }
+
+        return mimeType;
     }
 
 }
