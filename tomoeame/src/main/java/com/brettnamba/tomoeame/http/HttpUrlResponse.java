@@ -1,6 +1,6 @@
 package com.brettnamba.tomoeame.http;
 
-import org.apache.http.HttpStatus;
+import java.net.HttpURLConnection;
 
 /**
  * HTTP response object that is used with HttpUrlConnectionRequest
@@ -35,8 +35,8 @@ public class HttpUrlResponse {
      * @return True if the request was successful
      */
     public boolean isSuccess() {
-        return this.mResponseCode >= HttpStatus.SC_OK &&
-                this.mResponseCode < HttpStatus.SC_MULTIPLE_CHOICES;
+        return this.mResponseCode >= HttpURLConnection.HTTP_OK &&
+                this.mResponseCode < HttpURLConnection.HTTP_MULT_CHOICE;
     }
 
     /**
@@ -45,8 +45,8 @@ public class HttpUrlResponse {
      * @return True if there was a client error
      */
     public boolean isClientError() {
-        return this.mResponseCode >= HttpStatus.SC_BAD_REQUEST &&
-                this.mResponseCode < HttpStatus.SC_INTERNAL_SERVER_ERROR;
+        return this.mResponseCode >= HttpURLConnection.HTTP_BAD_REQUEST &&
+                this.mResponseCode < HttpURLConnection.HTTP_INTERNAL_ERROR;
     }
 
     /**
@@ -55,7 +55,7 @@ public class HttpUrlResponse {
      * @return True if there was a server error
      */
     public boolean isServerError() {
-        return this.mResponseCode >= HttpStatus.SC_INTERNAL_SERVER_ERROR &&
+        return this.mResponseCode >= HttpURLConnection.HTTP_INTERNAL_ERROR &&
                 this.mResponseCode < 600;
     }
 
